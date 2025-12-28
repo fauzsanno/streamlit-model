@@ -30,7 +30,7 @@ body {
     background: linear-gradient(135deg, #424242, #eef2ff);
 }
 .main {
-    background: transparent;
+    background: #424242;
 }
 
 /* GLASS CARD */
