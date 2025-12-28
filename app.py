@@ -11,7 +11,6 @@ from lightgbm import LGBMClassifier
 from sklearn.ensemble import VotingClassifier
 
 st.set_page_config(page_title="Cardio Disease Prediction", layout="centered")
-
 st.title("❤️ Prediksi Penyakit Jantung")
 
 # =========================
@@ -30,27 +29,41 @@ def train_model():
     df['pressure_diff'] = df['ap_hi'] - df['ap_lo']
 
     # =========================
-    # ⬇️ INI BAGIAN PENTING
+    # FEATURES & TARGET
     # =========================
     X = df.drop(columns=['cardio'])
     y = df['cardio']
 
-    # SIMPAN NAMA FITUR
+    # SIMPAN URUTAN FITUR
     feature_names = X.columns.tolist()
 
+    # Scaling
     scaler = RobustScaler()
     X_scaled = scaler.fit_transform(X)
 
+    # Handle imbalance
     smoteenn = SMOTEENN(random_state=42)
     X_res, y_res = smoteenn.fit_resample(X_scaled, y)
 
-    selector = SelectFromModel(XGBClassifier(random_state=42))
+    # Feature selection
+    selector = SelectFromModel(
+        XGBClassifier(
+            random_state=42,
+            eval_metric="logloss"
+        )
+    )
     X_selected = selector.fit_transform(X_res, y_res)
 
+    # Train split
     X_train, _, y_train, _ = train_test_split(
-        X_selected, y_res, test_size=0.2, random_state=42, stratify=y_res
+        X_selected,
+        y_res,
+        test_size=0.2,
+        random_state=42,
+        stratify=y_res
     )
 
+    # Models
     xgb = XGBClassifier(
         learning_rate=0.05,
         max_depth=6,
@@ -73,14 +86,9 @@ def train_model():
         voting="soft"
     )
 
-    # =========================
-    # ⬇️ MODEL DILATIH DI SINI
-    # =========================
+    # Train ensemble
     model.fit(X_train, y_train)
 
-    # =========================
-    # ⬇️ RETURN HARUS DI AKHIR
-    # =========================
     return model, scaler, selector, feature_names
 
 
@@ -103,21 +111,41 @@ smoke = st.selectbox("Smoke", [0, 1])
 alco = st.selectbox("Alcohol", [0, 1])
 active = st.selectbox("Physical Activity", [0, 1])
 
+# =========================
+# PREDICTION
+# =========================
 if st.button("🔍 Predict"):
     BMI = weight / ((height / 100) ** 2)
     pressure_diff = ap_hi - ap_lo
 
-    data = np.array([[
-        age, height, weight, ap_hi, ap_lo,
-        cholesterol, gluc, smoke, alco, active,
-        BMI, pressure_diff
-    ]])
+    # ⬇️ INPUT HARUS DATAFRAME
+    input_dict = {
+        "age": age,
+        "height": height,
+        "weight": weight,
+        "ap_hi": ap_hi,
+        "ap_lo": ap_lo,
+        "cholesterol": cholesterol,
+        "gluc": gluc,
+        "smoke": smoke,
+        "alco": alco,
+        "active": active,
+        "BMI": BMI,
+        "pressure_diff": pressure_diff
+    }
 
-    data_scaled = scaler.transform(data)
-    data_selected = selector.transform(data_scaled)
+    input_df = pd.DataFrame([input_dict])
 
-    proba = model.predict_proba(data_selected)[0][1]
-    pred = model.predict(data_selected)[0]
+    # ⬇️ SAMAKAN URUTAN FITUR
+    input_df = input_df[feature_names]
+
+    # Transform
+    input_scaled = scaler.transform(input_df)
+    input_selected = selector.transform(input_scaled)
+
+    # Predict
+    proba = model.predict_proba(input_selected)[0][1]
+    pred = model.predict(input_selected)[0]
 
     st.subheader("📊 Hasil Prediksi")
     st.write(f"Probabilitas Penyakit Jantung: **{proba:.2%}**")
