@@ -20,6 +20,9 @@ st.title("❤️ Prediksi Penyakit Jantung")
 def train_model():
     df = pd.read_csv("cardio_train.csv", sep=";")
 
+     # ⛔ DROP ID DI SINI
+    df = df.drop(columns=["id"])
+
     # Cleaning
     df = df[(df['ap_hi'] < 250) & (df['ap_lo'] < 200)]
     df = df[(df['height'] > 100) & (df['weight'] < 200)]
