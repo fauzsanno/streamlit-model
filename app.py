@@ -5,37 +5,13 @@ import pandas as pd
 
 st.set_page_config(page_title="Cardio Disease Prediction", layout="centered")
 
-import os
-import joblib
-import streamlit as st
-
+# Load model
 @st.cache_resource
 def load_model():
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    MODEL_DIR = os.path.join(BASE_DIR, "model")
-
-    model_path = os.path.join(MODEL_DIR, "ensemble.pkl")
-    scaler_path = os.path.join(MODEL_DIR, "scaler.pkl")
-    selector_path = os.path.join(MODEL_DIR, "selector.pkl")
-
-    if not os.path.exists(model_path):
-        st.error(f"Model file not found: {model_path}")
-        st.stop()
-
-    if not os.path.exists(scaler_path):
-        st.error(f"Scaler file not found: {scaler_path}")
-        st.stop()
-
-    if not os.path.exists(selector_path):
-        st.error(f"Selector file not found: {selector_path}")
-        st.stop()
-
-    model = joblib.load(model_path)
-    scaler = joblib.load(scaler_path)
-    selector = joblib.load(selector_path)
-
+    model = joblib.load("model/ensemble.pkl")
+    scaler = joblib.load("model/scaler.pkl")
+    selector = joblib.load("model/selector.pkl")
     return model, scaler, selector
-
 
 model, scaler, selector = load_model()
 
@@ -77,4 +53,3 @@ if st.button("🔍 Predict"):
         st.error("⚠️ Berisiko Penyakit Jantung")
     else:
         st.success("✅ Risiko Rendah")
-
