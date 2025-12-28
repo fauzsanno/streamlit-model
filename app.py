@@ -101,6 +101,12 @@ st.success("Model siap digunakan ✅")
 # INPUT USER
 # =========================
 age = st.number_input("Age (days)", min_value=1)
+gender = st.selectbox(
+    "Gender",
+    options=[1, 2],
+    format_func=lambda x: "Male" if x == 2 else "Female"
+)
+
 height = st.number_input("Height (cm)", min_value=100)
 weight = st.number_input("Weight (kg)", min_value=30)
 ap_hi = st.number_input("Systolic BP", min_value=80)
@@ -121,6 +127,7 @@ if st.button("🔍 Predict"):
     # ⬇️ INPUT HARUS DATAFRAME
     input_dict = {
         "age": age,
+         "gender": gender,   
         "height": height,
         "weight": weight,
         "ap_hi": ap_hi,
