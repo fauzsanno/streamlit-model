@@ -27,7 +27,7 @@ st.markdown("""
 
 /* BACKGROUND */
 body {
-    background: linear-gradient(135deg, #f8fafc, #eef2ff);
+    background: linear-gradient(135deg, #424242, #eef2ff);
 }
 .main {
     background: transparent;
@@ -185,16 +185,16 @@ with st.spinner("Initializing AI Model..."):
 st.markdown('<div class="glass-card">', unsafe_allow_html=True)
 st.subheader("🩺 Patient Medical Information")
 
-age = st.number_input("Age (days)", min_value=1)
-gender = st.selectbox("Gender", [1, 2], format_func=lambda x: "Male" if x == 2 else "Female")
-height = st.number_input("Height (cm)", min_value=100)
-weight = st.number_input("Weight (kg)", min_value=30)
-ap_hi = st.number_input("Systolic BP", min_value=80)
-ap_lo = st.number_input("Diastolic BP", min_value=50)
-cholesterol = st.selectbox("Cholesterol", [1, 2, 3])
-gluc = st.selectbox("Glucose", [1, 2, 3])
-smoke = st.selectbox("Smoke", [0, 1])
-alco = st.selectbox("Alcohol", [0, 1])
+age = st.number_input("Umur ( Jumlah hari)", min_value=1)
+gender = st.selectbox("Jenis Kelamin", [1, 2], format_func=lambda x: "Male" if x == 2 else "Female")
+height = st.number_input("Tinggi Badan (cm)", min_value=100)
+weight = st.number_input("Berat Badan (kg)", min_value=30)
+ap_hi = st.number_input(" Tekanan Darah(Systolic)", min_value=80)
+ap_lo = st.number_input("Tekanan Dara (Diastolic)", min_value=50)
+cholesterol = st.selectbox("Kolesterol", [1, 2, 3])
+gluc = st.selectbox("Gula", [1, 2, 3])
+smoke = st.selectbox("Merkok", [0, 1])
+alco = st.selectbox("Alkohol", [0, 1])
 active = st.selectbox("Physical Activity", [0, 1])
 st.markdown('</div>', unsafe_allow_html=True)
 
