@@ -1,24 +1,85 @@
 import streamlit as st
-import numpy as np
-import joblib
 import pandas as pd
+import numpy as np
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import RobustScaler
+from sklearn.feature_selection import SelectFromModel
+from imblearn.combine import SMOTEENN
+from xgboost import XGBClassifier
+from lightgbm import LGBMClassifier
+from sklearn.ensemble import VotingClassifier
 
 st.set_page_config(page_title="Cardio Disease Prediction", layout="centered")
 
-# Load model
+st.title("❤️ Prediksi Penyakit Jantung")
+
+# =========================
+# TRAIN MODEL (CACHED)
+# =========================
 @st.cache_resource
-def load_model():
-    model = joblib.load("model/ensemble.pkl")
-    scaler = joblib.load("model/scaler.pkl")
-    selector = joblib.load("model/selector.pkl")
+def train_model():
+    df = pd.read_csv("cardio_train.csv", sep=";")
+
+    # Cleaning
+    df = df[(df['ap_hi'] < 250) & (df['ap_lo'] < 200)]
+    df = df[(df['height'] > 100) & (df['weight'] < 200)]
+
+    # Feature engineering
+    df['BMI'] = df['weight'] / ((df['height'] / 100) ** 2)
+    df['pressure_diff'] = df['ap_hi'] - df['ap_lo']
+
+    X = df.drop(columns=['cardio'])
+    y = df['cardio']
+
+    scaler = RobustScaler()
+    X_scaled = scaler.fit_transform(X)
+
+    smoteenn = SMOTEENN(random_state=42)
+    X_res, y_res = smoteenn.fit_resample(X_scaled, y)
+
+    selector = SelectFromModel(XGBClassifier(random_state=42))
+    X_selected = selector.fit_transform(X_res, y_res)
+
+    X_train, _, y_train, _ = train_test_split(
+        X_selected, y_res, test_size=0.2, random_state=42, stratify=y_res
+    )
+
+    xgb = XGBClassifier(
+        learning_rate=0.05,
+        max_depth=6,
+        n_estimators=300,
+        subsample=0.8,
+        colsample_bytree=0.8,
+        eval_metric="logloss",
+        random_state=42
+    )
+
+    lgb = LGBMClassifier(
+        learning_rate=0.05,
+        num_leaves=31,
+        n_estimators=300,
+        random_state=42
+    )
+
+    model = VotingClassifier(
+        estimators=[("xgb", xgb), ("lgb", lgb)],
+        voting="soft"
+    )
+
+    model.fit(X_train, y_train)
+
     return model, scaler, selector
 
-model, scaler, selector = load_model()
 
-st.title("❤️ Prediksi Penyakit Jantung")
-st.write("Masukkan data pasien untuk prediksi risiko penyakit jantung")
+with st.spinner("Training model (hanya 1x)..."):
+    model, scaler, selector = train_model()
 
-# Input
+st.success("Model siap digunakan ✅")
+
+# =========================
+# INPUT USER
+# =========================
 age = st.number_input("Age (days)", min_value=1)
 height = st.number_input("Height (cm)", min_value=100)
 weight = st.number_input("Weight (kg)", min_value=30)
@@ -31,7 +92,7 @@ alco = st.selectbox("Alcohol", [0, 1])
 active = st.selectbox("Physical Activity", [0, 1])
 
 if st.button("🔍 Predict"):
-    BMI = weight / ((height/100)**2)
+    BMI = weight / ((height / 100) ** 2)
     pressure_diff = ap_hi - ap_lo
 
     data = np.array([[
@@ -53,5 +114,3 @@ if st.button("🔍 Predict"):
         st.error("⚠️ Berisiko Penyakit Jantung")
     else:
         st.success("✅ Risiko Rendah")
-
-
