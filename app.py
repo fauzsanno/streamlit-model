@@ -24,103 +24,90 @@ st.set_page_config(
 # =========================
 st.markdown("""
 <style>
-/* ===== GLOBAL BACKGROUND ===== */
+
+/* BACKGROUND */
 body {
-    background-color: #757575;
+    background: linear-gradient(135deg, #f8fafc, #eef2ff);
 }
 .main {
-    background-color: #757575;
+    background: transparent;
 }
 
-/* ===== CARD ===== */
-.card {
-    background: #ffffff;
-    padding: 2rem;
-    border-radius: 20px;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
-    margin-bottom: 1.8rem;
+/* GLASS CARD */
+.glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 22px;
+    padding: 2.2rem;
+    margin-bottom: 2rem;
+    box-shadow:
+        0 20px 40px rgba(0,0,0,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.4);
 }
 
-/* ===== TITLE ===== */
-.title {
+/* HEADER */
+.app-title {
     text-align: center;
-    font-size: 2.3rem;
+    font-size: 2.6rem;
     font-weight: 800;
-    color: #1f2937;
+    background: linear-gradient(90deg, #dc2626, #ef4444);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
-.subtitle {
+.app-subtitle {
     text-align: center;
     color: #6b7280;
-    margin-bottom: 2rem;
+    margin-top: 0.3rem;
+    font-size: 1.05rem;
 }
 
-/* ===== INPUT FIELDS ===== */
-input, select, textarea {
-    background-color: #bdbdbd !important;
-    color: #212121 !important;
-    border-radius: 12px !important;
-    border: none !important;
-    padding: 0.6rem !important;
-}
-
-/* Number input arrows */
-input::-webkit-inner-spin-button {
-    opacity: 1;
-}
-
-/* ===== STREAMLIT INPUT FIX ===== */
-div[data-baseweb="input"] > div {
-    background-color: #bdbdbd !important;
-    border-radius: 12px !important;
-}
-
-div[data-baseweb="select"] > div {
-    background-color: #bdbdbd !important;
-    border-radius: 12px !important;
-}
-
-/* ===== BUTTON ===== */
-.stButton>button {
-    background: linear-gradient(135deg, #ef4444, #b91c1c);
+/* BUTTON */
+.stButton > button {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
     color: white;
+    font-size: 1.1rem;
     font-weight: 700;
     border-radius: 14px;
-    height: 3.2rem;
+    padding: 0.7rem;
     width: 100%;
     border: none;
-    box-shadow: 0 8px 25px rgba(239,68,68,0.4);
+    box-shadow: 0 10px 25px rgba(220,38,38,0.35);
+    transition: all 0.3s ease;
 }
-.stButton>button:hover {
-    background: linear-gradient(135deg, #b91c1c, #7f1d1d);
+.stButton > button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(220,38,38,0.45);
 }
 
-/* ===== RESULT BOX ===== */
-.result-box {
+/* RESULT */
+.result-success {
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    color: #065f46;
     padding: 1.6rem;
-    border-radius: 16px;
-    margin-top: 1.5rem;
+    border-radius: 18px;
     font-size: 1.15rem;
+    font-weight: 600;
+    box-shadow: 0 12px 25px rgba(16,185,129,0.25);
+}
+.result-danger {
+    background: linear-gradient(135deg, #fef2f2, #fee2e2);
+    color: #7f1d1d;
+    padding: 1.6rem;
+    border-radius: 18px;
+    font-size: 1.15rem;
+    font-weight: 600;
+    box-shadow: 0 12px 25px rgba(239,68,68,0.25);
 }
 
-/* ===== SUCCESS & DANGER ===== */
-.success {
-    background: #e8f5e9;
-    color: #1b5e20;
-    border-left: 6px solid #2e7d32;
-}
-.danger {
-    background: #ffebee;
-    color: #b71c1c;
-    border-left: 6px solid #d32f2f;
-}
-
-/* ===== FOOTER ===== */
+/* FOOTER */
 .footer {
     text-align: center;
-    color: #e0e0e0;
-    margin-top: 2.5rem;
+    color: #9ca3af;
     font-size: 0.85rem;
+    margin-top: 3rem;
 }
+
 </style>
 """, unsafe_allow_html=True)
 
