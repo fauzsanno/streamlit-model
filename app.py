@@ -29,8 +29,14 @@ def train_model():
     df['BMI'] = df['weight'] / ((df['height'] / 100) ** 2)
     df['pressure_diff'] = df['ap_hi'] - df['ap_lo']
 
+    # =========================
+    # ⬇️ INI BAGIAN PENTING
+    # =========================
     X = df.drop(columns=['cardio'])
     y = df['cardio']
+
+    # SIMPAN NAMA FITUR
+    feature_names = X.columns.tolist()
 
     scaler = RobustScaler()
     X_scaled = scaler.fit_transform(X)
@@ -67,13 +73,19 @@ def train_model():
         voting="soft"
     )
 
+    # =========================
+    # ⬇️ MODEL DILATIH DI SINI
+    # =========================
     model.fit(X_train, y_train)
 
-    return model, scaler, selector
+    # =========================
+    # ⬇️ RETURN HARUS DI AKHIR
+    # =========================
+    return model, scaler, selector, feature_names
 
 
 with st.spinner("Training model (hanya 1x)..."):
-    model, scaler, selector = train_model()
+    model, scaler, selector, feature_names = train_model()
 
 st.success("Model siap digunakan ✅")
 
