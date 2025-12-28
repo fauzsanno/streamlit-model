@@ -20,75 +20,87 @@ st.set_page_config(
 )
 
 # =========================
+# PAGE CONFIG
+# =========================
+st.set_page_config(
+    page_title="Cardio Disease Prediction",
+    page_icon="❤️",
+    layout="centered"
+)
+
+# =========================
 # CUSTOM CSS
 # =========================
 st.markdown("""
 <style>
-/* Background */
-.stApp {
-    background: linear-gradient(135deg, #f8fbff, #eef2f7);
-    font-family: 'Segoe UI', sans-serif;
+body {
+    background-color: #f5f7fb;
 }
-
-/* Main title */
-h1 {
-    text-align: center;
-    color: #c0392b;
-    font-weight: 700;
+.main {
+    background-color: #f5f7fb;
 }
-
-/* Section headers */
-h3 {
-    color: #2c3e50;
-    margin-top: 30px;
-}
-
-/* Card container */
 .card {
-    background-color: white;
-    padding: 25px;
-    border-radius: 16px;
-    box-shadow: 0px 8px 20px rgba(0,0,0,0.08);
-    margin-bottom: 25px;
+    background: white;
+    padding: 2rem;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    margin-bottom: 1.5rem;
 }
-
-/* Button */
-.stButton>button {
-    width: 100%;
-    border-radius: 12px;
-    background: linear-gradient(90deg, #e74c3c, #c0392b);
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 12px;
-    border: none;
-    transition: 0.3s ease;
-}
-
-.stButton>button:hover {
-    background: linear-gradient(90deg, #c0392b, #96281b);
-    transform: scale(1.02);
-}
-
-/* Success & error box */
-.stAlert {
-    border-radius: 12px;
-}
-
-/* Metric text */
-.result-box {
-    font-size: 20px;
-    font-weight: 600;
+.title {
     text-align: center;
-    margin-top: 15px;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+.subtitle {
+    text-align: center;
+    color: #6b7280;
+    margin-bottom: 2rem;
+}
+.stButton>button {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    font-weight: 600;
+    border-radius: 12px;
+    height: 3rem;
+    width: 100%;
+    border: none;
+}
+.stButton>button:hover {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+}
+.result-box {
+    padding: 1.5rem;
+    border-radius: 14px;
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+}
+.success {
+    background: #ecfdf5;
+    color: #065f46;
+    border-left: 6px solid #10b981;
+}
+.danger {
+    background: #fef2f2;
+    color: #991b1b;
+    border-left: 6px solid #ef4444;
+}
+.footer {
+    text-align: center;
+    color: #9ca3af;
+    margin-top: 2rem;
+    font-size: 0.85rem;
 }
 </style>
 """, unsafe_allow_html=True)
 
 # =========================
-# TITLE
+# HEADER
 # =========================
-st.title("❤️ Prediksi Penyakit Jantung")
+st.markdown('<div class="card">', unsafe_allow_html=True)
+st.markdown('<div class="title">❤️ Prediksi Penyakit Jantung</div>', unsafe_allow_html=True)
+st.markdown('<div class="subtitle">Sistem Prediksi Risiko Penyakit Jantung Berbasis Machine Learning</div>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
 # =========================
 # TRAIN MODEL (CACHED)
