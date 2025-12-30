@@ -192,10 +192,20 @@ weight = st.number_input("Berat Badan (kg)", min_value=30)
 ap_hi = st.number_input(" Tekanan Darah(Systolic)", min_value=80)
 ap_lo = st.number_input("Tekanan Dara (Diastolic)", min_value=50)
 cholesterol = st.selectbox("Kolesterol", [1, 2, 3])
-gluc = st.selectbox("Gula", [1, 2, 3])
-smoke = st.selectbox("Merkok", [0, 1])
-alco = st.selectbox("Alkohol", [0, 1])
+st.caption("1 = Normal (<200 mg/dL), 2 = Di atas normal (200–239 mg/dL), 3 = Jauh di atas normal (≥240 mg/dL)")
+
+gluc = st.selectbox("Gula Darah", [1, 2, 3])
+st.caption("1 = Normal (<100 mg/dL), 2 = Di atas normal (100–125 mg/dL), 3 = Jauh di atas normal (≥126 mg/dL)")
+
+smoke_label = st.selectbox("Merokok", ("Tidak merokok", "Merokok"))
+smoke = 1 if smoke_label == "Merokok" else 0
+
+alco_label = st.selectbox("Alkohol", ("Tidak konsumsi alkohol", "Konsumsi alkohol"))
+alco = 1 if alco_label == "Konsumsi alkohol" else 0
+
 active = st.selectbox("Physical Activity", [0, 1])
+st.caption("0 = Tidak aktif (jarang olahraga), 1 = Aktif (≥30 menit/hari atau ≥150 menit/minggu)")
+
 st.markdown('</div>', unsafe_allow_html=True)
 
 # =========================
