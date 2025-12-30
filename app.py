@@ -243,7 +243,6 @@ if st.button("🔍 Predict Risk"):
         st.markdown(
             f"<div class='result-success'>✅ Tidak Berisiko Terkena Penyakit Jantung<br>Probabilitas: {proba:.2%}</div>",
             unsafe_allow_html=True
-            st.caption("Hasil prediksi ini bersifat pendukung dan tidak menggantikan diagnosis medis.")
         )
     st.markdown('</div>', unsafe_allow_html=True)
 
