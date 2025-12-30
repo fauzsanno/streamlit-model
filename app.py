@@ -240,16 +240,17 @@ if st.button("🔍 Predict Risk"):
     st.markdown('<div class="glass-card">', unsafe_allow_html=True)
     st.subheader("📊 Prediction Result")
 
-    if pred == 1:
+if pred == 1:
         st.markdown(
-            f"<div class='result-danger'>⚠️ High Risk of Heart Disease<br>Probability: {proba:.2%}</div>",
+            f"<div class='result-danger'>⚠️ Berisiko Terkena Penyakit Jantung<br>Probabilitas: {proba:.2%}</div>",
             unsafe_allow_html=True
         )
     else:
         st.markdown(
-            f"<div class='result-success'>✅ Low Risk of Heart Disease<br>Probability: {proba:.2%}</div>",
+            f"<div class='result-success'>✅ Tidak Berisiko Terkena Penyakit Jantung<br>Probabilitas: {proba:.2%}</div>",
             unsafe_allow_html=True
-        )
+    )
+
     st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown('<div class="footer">© 2025 Cardio AI • Premium Medical Decision System</div>', unsafe_allow_html=True)
